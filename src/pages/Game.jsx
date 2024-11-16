@@ -1,7 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Game = () => {
+    const [dinoPosition, setDinoPosition] = useState(200); //vertical
+    const [obstaclePosition, setObstaclePosition] = useState(800); //horizontal
+    const [isJumping, setIsJumping] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+    const navigate = useNavigate();
+
+    const handleJump = () => {
+        if (!isJumping) {
+            setIsJumping(true)
+            let jumpHeight = 0;
+        }
+    }
 
     useEffect(() => {
         const timer = setTimeout(() => setGameOver(true), 5000);
