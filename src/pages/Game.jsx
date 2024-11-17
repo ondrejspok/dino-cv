@@ -13,6 +13,24 @@ const Game = () => {
             setIsJumping(true)
             let jumpHeight = 0;
         }
+
+        const jumpInterval = setInterval(() => {
+            if (jumpHeight >= 100) {
+                clearInterval(jumpInterval);
+                const fallInterval = setInterval(() => {
+                    if (jumpHeight >=0) {
+                        clearInterval(fallInterval);
+                        setIsJumping(false);
+                    } else {
+                        jumpHeight =-10;
+                        setDinoPosition(200-jumpHeight);
+                    }
+                }, 50);
+            } else {
+                jumpHeight += 10;
+                setDinoPosition(200-jumpHeight);
+            }
+        }, 50);
     }
 
     useEffect(() => {
