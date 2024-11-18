@@ -8,6 +8,7 @@ const Game = () => {
     const [gameOver, setGameOver] = useState(false);
     const navigate = useNavigate();
 
+    // jump physics
     const handleJump = () => {
         if (!isJumping) {
             setIsJumping(true)
@@ -31,7 +32,30 @@ const Game = () => {
                 setDinoPosition(200-jumpHeight);
             }
         }, 50);
+    };
+
+    // obstacle horizontal movement + reset "new" obstacle
+    useEffect(() => {
+        const interval = setInterval(() => {
+          setObstaclePosition((prev) => {
+            if (prev <= 0) return 800; // new obstacle
+            return prev - 10;
+          });
+        }, 50);
+    
+
+    // gameover if obstacle colides with dino
+    if (
+        obstaclePosition > 50 &&
+        obstaclePosition < 150 &&
+        dinoPosition >= 200)
+    {
+        setGameOver(true);
+        clearInterval(interval);
     }
+
+    return () => clearInterval(interval);
+    }, [obstaclePosition, dinoPosition]);
 
     useEffect(() => {
         const timer = setTimeout(() => setGameOver(true), 5000);
@@ -43,15 +67,26 @@ const Game = () => {
         setGameOver(false);
     };
 
+useEffect(() => {
+  const handleSpacebarDown = (event) => {
+    if (event.code === 'Space') handleJump();
+  };
+
+  window.addEventListener('keydown', handleSpacebarDown);
+  return () => window.removeEventListener('keydown', handleSpacebarDown);
+}, []);
+
     return (
         <div className="game-container">
             <h1>Dino Game</h1>
               <div className="game-area">
-                {gameOver ? (
-                <div className="game-over">
-                    <h2>Game Over!</h2>
-                    <button onClick={() => window.location.href = '/showcase'}>Go to My Showcase</button>
-                </div>
+                <div className="dino" style={{bottom: `${dinoPosition}px`}} />
+                <div className="obstacle" style={{left : `${obstaclePosition}px`}}/>
+                    {gameOver ? (
+                    <div className="game-over">
+                        <h2>Game Over!</h2>
+                        <button onClick={() => window.location.href = '/showcase'}>Go to My Showcase</button>
+                    </div>
         ) : (
           <button onClick={startGame}>Press Spacebar to Start Game</button>
         )}
@@ -59,5 +94,4 @@ const Game = () => {
         </div>
     );
 };
-
 export default Game;
