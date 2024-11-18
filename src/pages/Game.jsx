@@ -34,7 +34,7 @@ const Game = () => {
         }, 50);
     };
 
-    // obstacle movement horizontal
+    // obstacle horizontal movement + reset "new" obstacle
     useEffect(() => {
         const interval = setInterval(() => {
           setObstaclePosition((prev) => {
@@ -66,6 +66,15 @@ const Game = () => {
     const startGame = () => {
         setGameOver(false);
     };
+
+useEffect(() => {
+  const handleSpacebarDown = (event) => {
+    if (event.code === 'Space') handleJump();
+  };
+
+  window.addEventListener('keydown', handleSpacebarDown);
+  return () => window.removeEventListener('keydown', handleSpacebarDown);
+}, []);
 
     return (
         <div className="game-container">
