@@ -8,7 +8,6 @@ const Game = () => {
     const [gameOver, setGameOver] = useState(false);
     const navigate = useNavigate();
 
-    // jump physics
     const handleJump = () => {
         if (!isJumping) {
             setIsJumping(true)
